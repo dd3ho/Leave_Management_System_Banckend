@@ -62,7 +62,9 @@ def signup(request):
                     user_id = User.objects.get(id=user.id),
                     prefix = data.get("prefix"),
                     fname = data.get("fname"),
-                    lname = data.get("lname")
+                    lname = data.get("lname"),
+                    department = data.get("department"),
+                    faculty = data.get("faculty"),
                 )
                 teacher.save()
             else:
@@ -73,7 +75,9 @@ def signup(request):
                     user_id = User.objects.get(id=user.id),
                     prefix = data.get("prefix"),
                     fname = data.get("fname"),
-                    lname = data.get("lname")
+                    lname = data.get("lname"),
+                    department = data.get("department"),
+                    faculty = data.get("faculty"),
                 )
                 student.save()
         else:
