@@ -5,4 +5,5 @@ from .views import FilesViewSet
 router = DefaultRouter()
 router.register("files", FilesViewSet, basename="files")
 
+
 urlpatterns = [path("", include(router.urls))]

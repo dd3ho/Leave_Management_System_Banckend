@@ -63,8 +63,8 @@ def signup(request):
                     prefix = data.get("prefix"),
                     fname = data.get("fname"),
                     lname = data.get("lname"),
-                    department = data.get("department"),
-                    faculty = data.get("faculty"),
+                    department_id = data.get("department"),
+                    faculty_id = data.get("faculty"),
                 )
                 teacher.save()
             else:
@@ -76,8 +76,8 @@ def signup(request):
                     prefix = data.get("prefix"),
                     fname = data.get("fname"),
                     lname = data.get("lname"),
-                    department = data.get("department"),
-                    faculty = data.get("faculty"),
+                    department_id = data.get("department"),
+                    faculty_id = data.get("faculty"),
                 )
                 student.save()
         else:
@@ -91,7 +91,7 @@ def signup(request):
 
 
 @api_view(["POST"])
-def editpassword(request):
+def editPassword(request):
     user = request.user
 
     form = PasswordChangeForm(data=request.POST, user=user)
