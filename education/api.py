@@ -11,17 +11,17 @@ from student.models import Student
 from account.models import User
 from education.models import Faculty, Department
 
-@api_view(["GET"])
-def me(request):
-    return JsonResponse(
-        {
-            "id": request.user.id,
-            "username": request.user.username,
-            "user_id": request.user.user_id,
-            "email": request.user.email,
-            "role": request.user.role
-        }
-    )
+# @api_view(["GET"])
+# def me(request):
+#     return JsonResponse(
+#         {
+#             "id": request.user.id,
+#             "username": request.user.username,
+#             "user_id": request.user.user_id,
+#             "email": request.user.email,
+#             "role": request.user.role
+#         }
+#     )
 
 
 # signup
@@ -118,17 +118,3 @@ def signup(request):
         print(form.errors)
         message = "error"
     return JsonResponse({"message": message})
-
-
-@api_view(["POST"])
-def editPassword(request):
-    user = request.user
-
-    form = PasswordChangeForm(data=request.POST, user=user)
-
-    if form.is_valid():
-        form.save()
-
-        return JsonResponse({"message": "success"})
-    else:
-        return JsonResponse({"message": form.errors.as_json()}, safe=False)
