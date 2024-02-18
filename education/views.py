@@ -14,7 +14,7 @@ class DepartmentViewSet(viewsets.ModelViewSet):
     serializer_class = DepartmentSerializer
 
     # GET /education/department/
-    # GET /education/department/?faculty_id=12&name=อุษา
+    # GET /education/department/?faculty_id=12&name=วิทยาการคอมพิวเตอร์
     # GET /education/department/?name=อุษา
     # GET /education/department/?faculty_id=12
 
