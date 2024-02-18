@@ -98,18 +98,22 @@ def signup(request):
                 )
                 teacher.save()
             else:
-                '''
-                create a new Student
-                '''
-                student = Student(
-                    user_id = User.objects.get(id=user.id),
-                    prefix = data.get("prefix"),
-                    fname = data.get("fname"),
-                    lname = data.get("lname"),
-                    faculty_id = faculty,
-                    department_id = department
-                )
-                student.save()
+                if role == "student":
+                    
+                    '''
+                    create a new Student
+                    '''
+                    student = Student(
+                        user_id = User.objects.get(id=user.id),
+                        prefix = data.get("prefix"),
+                        fname = data.get("fname"),
+                        lname = data.get("lname"),
+                        faculty_id = faculty,
+                        department_id = department
+                    )
+                    student.save()
+                else:
+                    pass
         else:
             print("ไม่พบ User")
         

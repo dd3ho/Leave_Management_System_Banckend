@@ -9,4 +9,5 @@ urlpatterns = [
     path("leave/", include("leave.urls")),
     path("education/", include("education.urls")),
     path("", include("teacher.urls")),
+    path("", include("student.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

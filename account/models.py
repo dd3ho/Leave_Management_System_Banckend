@@ -10,6 +10,7 @@ from django.utils import timezone
 ROLES = [
     ("teacher", "Teacher"),
     ("student", "Student"),
+    ("admin", "Admin"),
 ]
 
 class CustomUserManager(UserManager):
