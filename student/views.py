@@ -1,6 +1,6 @@
 from rest_framework import viewsets
-from .models import Student
-from .serializers import StudentSerializer
+from .models import Student, StudentRegisterCourser
+from .serializers import StudentSerializer, StudentRegisterCourserSerializer
 
 # Create your views here.
 class StudentViewSet(viewsets.ModelViewSet):
@@ -23,5 +23,30 @@ class StudentViewSet(viewsets.ModelViewSet):
 
         if fname:
             queryset = queryset.filter(fname__icontains=fname)
+
+        return queryset
+
+
+class StudentRegisterCourserViewSet(viewsets.ModelViewSet):
+    queryset = StudentRegisterCourser.objects.all()
+    serializer_class = StudentRegisterCourserSerializer
+    
+    # GET /studentRegister/
+    # GET /studentRegister/?student_id=1&course_id=1
+    # GET /studentRegister/?course_id=1
+    # GET /studentRegister/?student_id=1
+    
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        student_id = self.request.query_params.get('student_id')
+        course_id = self.request.query_params.get('course_id')
+
+        if student_id:
+            queryset = queryset.filter(student_id=student_id)
+            
+        if course_id:
+            queryset = queryset.filter(course_id=course_id)
+
 
         return queryset
