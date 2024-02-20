@@ -18,12 +18,12 @@ class TeacherSerializer(serializers.ModelSerializer):
 
 
 class InstructorCourseSerializer(serializers.ModelSerializer):
-    # teacher_id = serializers.PrimaryKeyRelatedField(
-    #     queryset=Teacher.objects.all(),
-    #     required=True
-    # )
+    teacher_id = serializers.PrimaryKeyRelatedField(
+        queryset=Teacher.objects.all(),
+        required=True
+    )
     teacher_data = TeacherSerializer(source='teacher_id', read_only=True)
-    teacher_id = serializers.IntegerField(source='teacher_id.id', read_only=True)
+    # teacher_id = serializers.IntegerField(source='teacher_id.id', read_only=True)
     course_id = serializers.PrimaryKeyRelatedField(
         queryset=Course.objects.all(),
         required=True
