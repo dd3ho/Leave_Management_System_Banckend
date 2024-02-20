@@ -47,15 +47,15 @@ class InstructorCourseViewSet(viewsets.ModelViewSet):
     # GET /instructorCourse/?teacher_id=1&course_id=2
     # GET /instructorCourse/?teacher_id=1
     
+
     def get_queryset(self):
         queryset = super().get_queryset()
         teacher_id = self.request.query_params.get('teacher_id')
         course_id = self.request.query_params.get('course_id')
 
         if teacher_id:
-            queryset = queryset.filter(teacher_id=teacher_id)
-
+            queryset = queryset.filter(teacher_id__id=teacher_id)
         if course_id:
-            queryset = queryset.filter(course_id=course_id)
-            
+            queryset = queryset.filter(course_id__id=course_id)
+
         return queryset
