@@ -1,18 +1,18 @@
 from rest_framework import viewsets
-from .models import Teacher
-from .serializers import TeacherSerializer
+from .models import Teacher, InstructorCourse
+from .serializers import TeacherSerializer, InstructorCourseSerializer
 
 # Create your views here.
 class TeacherViewSet(viewsets.ModelViewSet):
     queryset = Teacher.objects.all()
     serializer_class = TeacherSerializer
     
-    # GET /api/teachers/
-    # GET /teachers/?user_id=12&fname=อุษา
-    # GET /api/teachers/?fname=อุษา
-    # GET /api/teachers/?user_id=12
-    # GET /teachers/?faculty_id=วิทยาศาสตร์&department_id=วิทยาการคอมพิวเตอร์
-    # GET /teachers/?faculty_id=วิทยาศาสตร์
+    # GET /teacher/
+    # GET /teacher/?user_id=12&fname=อุษา
+    # GET /teacher/?fname=อุษา
+    # GET /teacher/?user_id=12
+    # GET /teacher/?faculty_id=วิทยาศาสตร์&department_id=วิทยาการคอมพิวเตอร์
+    # GET /teacher/?faculty_id=วิทยาศาสตร์
     
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -32,5 +32,30 @@ class TeacherViewSet(viewsets.ModelViewSet):
         
         if department_id:
             queryset = queryset.filter(department_id=department_id)
+            
+        return queryset
+
+
+class InstructorCourseViewSet(viewsets.ModelViewSet):
+    queryset = InstructorCourse.objects.all()
+    serializer_class = InstructorCourseSerializer
+    
+    # GET /instructorCourse/
+    # GET /instructorCourse/?teacher_id=1&course_id=2
+    # GET /instructorCourse/?course_id=2
+    # GET /instructorCourse/?teacher_id=1
+    # GET /instructorCourse/?teacher_id=1&course_id=2
+    # GET /instructorCourse/?teacher_id=1
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        teacher_id = self.request.query_params.get('teacher_id')
+        course_id = self.request.query_params.get('course_id')
+
+        if teacher_id:
+            queryset = queryset.filter(teacher_id=teacher_id)
+
+        if course_id:
+            queryset = queryset.filter(course_id=course_id)
             
         return queryset
