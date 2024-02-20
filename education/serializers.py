@@ -45,6 +45,14 @@ class DepartmentSerializer(serializers.ModelSerializer):
 
 
 class CourseSerializer(serializers.ModelSerializer):
+    faculty_id = serializers.PrimaryKeyRelatedField(
+        queryset=Faculty.objects.all(),
+        required=True
+    )
+    department_id = serializers.PrimaryKeyRelatedField(
+        queryset=Department.objects.all(),
+        required=True
+    )
     class Meta:
         model = Course
         fields = '__all__'
