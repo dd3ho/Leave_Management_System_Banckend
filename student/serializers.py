@@ -3,7 +3,7 @@ from .models import  Student, StudentRegisterCourser
 from account.models import User
 from django.utils.translation import gettext_lazy as _
 from education.models import Course
-
+from education.serializers import CourseSerializer
 
 class StudentSerializer(serializers.ModelSerializer):
     user_id = serializers.PrimaryKeyRelatedField(
@@ -25,7 +25,7 @@ class StudentRegisterCourserSerializer(serializers.ModelSerializer):
         required=True
     )
     student_data = StudentSerializer(source='student_id', read_only=True)
-    
+    course_data = CourseSerializer(source='course_id', read_only=True)
     default_error_messages = {
         'studentRegisterCourser_already_exists': _(
             'This StudentRegisterCourser already exists.'
