@@ -7,10 +7,10 @@ class StudentViewSet(viewsets.ModelViewSet):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
     
-    # GET /api/Students/
-    # GET /Students/?user_id=12&fname=อุษา
-    # GET /api/Students/?fname=อุษา
-    # GET /api/Students/?user_id=12
+    # GET /student/
+    # GET /student/?user_id=12&fname=อุษา
+    # GET /student/?fname=อุษา
+    # GET /student/?user_id=12
     
     
     def get_queryset(self):
