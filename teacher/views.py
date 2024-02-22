@@ -56,6 +56,6 @@ class InstructorCourseViewSet(viewsets.ModelViewSet):
         if teacher_id:
             queryset = queryset.filter(teacher_id=teacher_id)
         if course_id:
-            queryset = queryset.filter(course_id__id=course_id)
+            queryset = queryset.filter(course_id=course_id)
 
         return queryset

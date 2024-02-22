@@ -24,6 +24,8 @@ class StudentRegisterCourserSerializer(serializers.ModelSerializer):
         queryset=Course.objects.all(),
         required=True
     )
+    student_data = StudentSerializer(source='student_id', read_only=True)
+    
     default_error_messages = {
         'studentRegisterCourser_already_exists': _(
             'This StudentRegisterCourser already exists.'
@@ -51,5 +53,3 @@ class StudentRegisterCourserSerializer(serializers.ModelSerializer):
         studentRegisterCourser.save()
 
         return StudentRegisterCourserSerializer(studentRegisterCourser).data   
-
-
