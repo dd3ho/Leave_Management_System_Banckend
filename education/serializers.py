@@ -21,6 +21,7 @@ class DepartmentSerializer(serializers.ModelSerializer):
             'This Department already exists.'
         )
     }
+    faculty_data = FacultySerializer(source='faculty_id', read_only=True)
     class Meta:
         model = Department
         fields = '__all__'
