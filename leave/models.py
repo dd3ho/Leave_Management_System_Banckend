@@ -10,6 +10,13 @@ STATUS = [
     ("pending", "Pending"),
 ]
 
+
+TYPE = [
+    ("ลากิจ", "Personal Leave"),
+    ("ลาป่วย", "Sick Leave"),
+    ("อื่น ๆ", "Other Leave"),
+]
+
 # Create your models here.
 class Files(models.Model):
     pdf = models.FileField(upload_to="store/pdfs/")
@@ -29,7 +36,7 @@ class LeaveRequest(models.Model):
     )
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
-    leave_type = models.CharField(max_length=20)
+    leave_type = models.CharField(max_length=20, choices=TYPE, default="undefined")
     description = models.TextField()
     created_at = models.DateField(auto_now_add=True)
     status = models.CharField(
