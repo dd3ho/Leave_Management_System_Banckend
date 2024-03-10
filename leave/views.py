@@ -57,11 +57,13 @@ class LeaveRequestViewSet(viewsets.ModelViewSet):
 
             # You're trying to build a URL with the leaveRequest.id which is correct.
             leaveRequest_url = f'http://localhost:8000/leaveRequest/{lid}/'
+            leaveRequest_id = lid
 
             # At this point, serializer.data is a ReturnDict which cannot be updated with new keys as you intend.
             # Instead, build a new response dictionary based on serializer.data
             response_data = serializer.data
             response_data['id-url'] = leaveRequest_url  # Add the URL to the serialized data
+            response_data['leaveRequest_id'] = leaveRequest_id
             
             return Response(response_data, status=status.HTTP_201_CREATED)  # Return the updated data
         else:

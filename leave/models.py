@@ -44,7 +44,7 @@ class LeaveRequest(models.Model):
 
 class LeaveRequestDetail(models.Model):
     leave_request_id = models.ForeignKey(LeaveRequest, null=True, on_delete=models.CASCADE)
-    student_id = models.ForeignKey(User,on_delete=models.CASCADE)
+    student_id = models.ForeignKey(Student,on_delete=models.CASCADE)
     course_id = models.ForeignKey(Course, null=True, blank=True, on_delete=models.CASCADE)
     teacher_id = models.ForeignKey(Teacher, null=True, blank=True, on_delete=models.CASCADE)
     
