@@ -39,14 +39,14 @@ class LeaveRequest(models.Model):
     leave_type = models.CharField(max_length=20, choices=TYPE, default="undefined")
     description = models.TextField()
     created_at = models.DateField(auto_now_add=True)
-    status = models.CharField(
-        max_length=20, choices=STATUS, default="pending")
 
 class LeaveRequestDetail(models.Model):
     leave_request_id = models.ForeignKey(LeaveRequest, null=True, on_delete=models.CASCADE)
     student_id = models.ForeignKey(Student,on_delete=models.CASCADE)
     course_id = models.ForeignKey(Course, null=True, blank=True, on_delete=models.CASCADE)
     teacher_id = models.ForeignKey(Teacher, null=True, blank=True, on_delete=models.CASCADE)
+    status = models.CharField(max_length=20, choices=STATUS, default="pending")
+
     
     # subjects = models.JSONField()
     # start_date = models.DateField(null=True, blank=True)
