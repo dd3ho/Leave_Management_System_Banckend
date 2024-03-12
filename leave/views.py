@@ -8,11 +8,6 @@ from rest_framework.response import Response
 # ... your other imports
 
 
-class FilesViewSet(viewsets.ModelViewSet):
-    queryset = Files.objects.all()
-    serializer_class = FileSerializer
-
-
 class LeaveRequestViewSet(viewsets.ModelViewSet):
     queryset = LeaveRequest.objects.all()
     serializer_class = LeaveRequestSerializer
@@ -169,3 +164,8 @@ class LeaveRequestDetailViewSet(viewsets.ModelViewSet):
             ).delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+class FilesViewSet(viewsets.ModelViewSet):
+    queryset = Files.objects.all()
+    serializer_class = FileSerializer

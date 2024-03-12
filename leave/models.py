@@ -18,21 +18,11 @@ TYPE = [
 ]
 
 # Create your models here.
-class Files(models.Model):
-    pdf = models.FileField(upload_to="store/pdfs/")
-
-    def __str__(self):
-        return self.pdf
-
 
 class LeaveRequest(models.Model):
     approve_id_by = models.ForeignKey(
         Teacher, null=True, blank=True,
         on_delete=models.CASCADE
-    )
-    file_id = models.ForeignKey(
-        Files, related_name='leave_papers', on_delete=models.CASCADE,
-        null=True, blank=True
     )
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
@@ -56,3 +46,11 @@ class LeaveRequestDetail(models.Model):
     # description = models.TextField()
     # created_at = models.DateField(auto_now_add=True)
     # teachers = models.ManyToManyField(Teacher, null=True, blank=True)
+
+
+class Files(models.Model):
+    leave_request_id = models.ForeignKey(LeaveRequest, null=True, blank=True, on_delete=models.CASCADE)
+    pdf = models.FileField(upload_to="store/pdfs/")
+
+    def __str__(self):
+        return self.pdf

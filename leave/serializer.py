@@ -9,11 +9,6 @@ from .models import Teacher
 from teacher.serializers import TeacherSerializer
 
 
-class FileSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Files
-        fields = ["id", "pdf"]
-
 
 class LeaveRequestSerializer(serializers.ModelSerializer):
     file_id = serializers.FileField(required=False)
@@ -66,5 +61,12 @@ class LeaveRequestDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = LeaveRequestDetail
+        fields = "__all__"
+        dept = 2
+
+
+class FileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Files
         fields = "__all__"
         dept = 2
