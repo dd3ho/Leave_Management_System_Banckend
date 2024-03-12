@@ -3,6 +3,8 @@ from .models import Files, LeaveRequest, LeaveRequestDetail
 from .serializer import FileSerializer, LeaveRequestSerializer, LeaveRequestDetailSerializer
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.decorators import action
+from rest_framework.response import Response
 # ... your other imports
 
 
@@ -68,6 +70,18 @@ class LeaveRequestViewSet(viewsets.ModelViewSet):
             return Response(response_data, status=status.HTTP_201_CREATED)  # Return the updated data
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def destroy(self, request, *args, **kwargs):
+        try:
+            # 'pk' is typically the URL keyword argument for the primary key of the model
+            leave_request = LeaveRequest.objects.get(pk=kwargs.get('pk'))
+            leave_request.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except LeaveRequest.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            # Handle unexpected errors
+            return Response(str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
     # def create(self, request):
     #     serializer = LeaveRequestSerializer(data=request.data)
@@ -112,3 +126,46 @@ class LeaveRequestDetailViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(student_id=student_id)
         
         return queryset
+    
+    def destroy(self, request, *args, **kwargs):
+        try:
+            # Extract 'course_id' and 'leave_request_id' from the request if they are provided
+            course_id = request.query_params.get('course_id')
+            leave_request_id = request.query_params.get('leave_request_id')
+            
+            if course_id and leave_request_id:
+                # Filter the queryset for all records with the given 'course_id' and 'leave_request_id'
+                leave_request_details = LeaveRequestDetail.objects.filter(
+                    course_id=course_id,
+                    leave_request_id=leave_request_id
+                )
+                # If no records are found, return a 404 response
+                if not leave_request_details.exists():
+                    return Response(status=status.HTTP_404_NOT_FOUND)
+                # Delete all records in the queryset
+                leave_request_details.delete()
+            else:
+                # If 'course_id' or 'leave_request_id' is not provided, just delete the single object
+                leave_request_detail = self.get_object()
+                leave_request_detail.delete()
+
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+        except LeaveRequestDetail.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            # Handle unexpected errors
+            return Response(str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    @action(detail=False, methods=['delete'])
+    def delete_multiple(self, request):
+        course_id = request.query_params.get('course_id')
+        leave_request_id = request.query_params.get('leave_request_id')
+        
+        if course_id and leave_request_id:
+            LeaveRequestDetail.objects.filter(
+                course_id=course_id,
+                leave_request_id=leave_request_id
+            ).delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
