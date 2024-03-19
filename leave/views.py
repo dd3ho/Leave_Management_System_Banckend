@@ -108,6 +108,7 @@ class LeaveRequestDetailViewSet(viewsets.ModelViewSet):
         student_id = self.request.query_params.get('student_id')
         teacher_id = self.request.query_params.get('teacher_id')
         course_id = self.request.query_params.get('course_id')
+        status = self.request.query_params.get('status')
         
         
         if leave_request_id:
@@ -119,6 +120,9 @@ class LeaveRequestDetailViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(course_id=course_id)
         if student_id:
             queryset = queryset.filter(student_id=student_id)
+        
+        if status:
+            queryset = queryset.filter(status__icontains=status)
         
         return queryset
     
@@ -164,6 +168,33 @@ class LeaveRequestDetailViewSet(viewsets.ModelViewSet):
             ).delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         return Response(status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(detail=False, methods=['put'])
+    def update_multiple(self, request):
+        course_id = request.query_params.get('course_id')
+        leave_request_id = request.query_params.get('leave_request_id')
+        status = request.data.get('status')  # Directly get the status
+
+        if course_id and leave_request_id:
+            updated_count = LeaveRequestDetail.objects.filter(
+                course_id=course_id,
+                leave_request_id=leave_request_id
+            ).update(status=status)  # Direct update without serialization
+
+            return Response({'updated_records': updated_count})
+        else:
+            return Response({'error': 'Invalid parameters provided'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Method for updating objects
+    # def update(self, request, *args, **kwargs):
+    #     try:
+    #         instance = self.get_object()
+    #         serializer = self.get_serializer(instance, data=request.data, partial=True)
+    #         serializer.is_valid(raise_exception=True)
+    #         self.perform_update(serializer)
+    #         return Response(serializer.data)
+    #     except Exception as e:
+    #         return Response(str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class FilesViewSet(viewsets.ModelViewSet):

@@ -14,4 +14,5 @@ urlpatterns = [
     # Request Method:
     # DELETE
     path('leaveDetail/delete_multiple/', LeaveRequestDetailViewSet.as_view({'delete': 'delete_multiple'})),
+    path('leaveDetail/update_multiple/', LeaveRequestDetailViewSet.as_view({'put': 'update_multiple'})),
 ]

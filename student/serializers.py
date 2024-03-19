@@ -4,12 +4,14 @@ from account.models import User
 from django.utils.translation import gettext_lazy as _
 from education.models import Course
 from education.serializers import CourseSerializer
+from account.serializers import UserSerializer
 
 class StudentSerializer(serializers.ModelSerializer):
     user_id = serializers.PrimaryKeyRelatedField(
         queryset=User.objects.all(),
         required=True
     )
+    user_data = UserSerializer(source='user_id', read_only=True)
     class Meta:
         model = Student
         fields = '__all__'
@@ -53,6 +55,3 @@ class StudentRegisterCourserSerializer(serializers.ModelSerializer):
         studentRegisterCourser.save()
 
         return StudentRegisterCourserSerializer(studentRegisterCourser).data   
-
-
-

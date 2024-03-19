@@ -40,20 +40,20 @@ class LeaveRequestSerializer(serializers.ModelSerializer):
 
 class LeaveRequestDetailSerializer(serializers.ModelSerializer):
     leave_request_id = serializers.PrimaryKeyRelatedField(
-        queryset=LeaveRequest.objects.all(), required=True
+        queryset=LeaveRequest.objects.all(), required=False
     )
     student_id = serializers.PrimaryKeyRelatedField(
-        queryset=Student.objects.all(), required=True
+        queryset=Student.objects.all(), required=False
     )
     course_id = serializers.PrimaryKeyRelatedField(
-        queryset=Course.objects.all(), required=True
+        queryset=Course.objects.all(), required=False
     )
     teacher_id = serializers.PrimaryKeyRelatedField(
-        queryset=Teacher.objects.all(), required=True
+        queryset=Teacher.objects.all(), required=False
     )
 
     leave_request_data = LeaveRequestSerializer(
-        source="leave_request_id", read_only=True
+        source="leave_request_id", read_only=False, required=False
     )
     teacher_data = TeacherSerializer(source="teacher_id", read_only=True)
     student_data = StudentSerializer(source="student_id", read_only=True)
