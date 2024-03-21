@@ -66,6 +66,10 @@ class LeaveRequestDetailSerializer(serializers.ModelSerializer):
 
 
 class FileSerializer(serializers.ModelSerializer):
+    leave_request_id = serializers.PrimaryKeyRelatedField(
+        queryset=LeaveRequest.objects.all(), required=False
+    )
+    
     class Meta:
         model = Files
         fields = "__all__"

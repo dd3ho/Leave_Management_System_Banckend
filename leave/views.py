@@ -200,3 +200,14 @@ class LeaveRequestDetailViewSet(viewsets.ModelViewSet):
 class FilesViewSet(viewsets.ModelViewSet):
     queryset = Files.objects.all()
     serializer_class = FileSerializer
+    # GET /files/?leave_request_id=12
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        leave_request_id = self.request.query_params.get('leave_request_id')
+        
+        
+        if leave_request_id:
+            queryset = queryset.filter(leave_request_id=leave_request_id)
+        
+        
+        return queryset
