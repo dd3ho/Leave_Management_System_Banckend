@@ -12,11 +12,6 @@ from teacher.serializers import TeacherSerializer
 
 class LeaveRequestSerializer(serializers.ModelSerializer):
     file_id = serializers.FileField(required=False)
-    approve_id_by = serializers.PrimaryKeyRelatedField(
-            queryset=Teacher.objects.all(),
-            required=False,  # Add this line to make the field optional
-            allow_null=True  # Add this line to allow null values
-        )
 
     class Meta:
         model = LeaveRequest
@@ -55,9 +50,15 @@ class LeaveRequestDetailSerializer(serializers.ModelSerializer):
     leave_request_data = LeaveRequestSerializer(
         source="leave_request_id", read_only=False, required=False
     )
+    approve_id_by = serializers.PrimaryKeyRelatedField(
+        queryset=Teacher.objects.all(),
+        required=False,  # Add this line to make the field optional
+        allow_null=True  # Add this line to allow null values
+    )
     teacher_data = TeacherSerializer(source="teacher_id", read_only=True)
     student_data = StudentSerializer(source="student_id", read_only=True)
     course_data = CourseSerializer(source="course_id", read_only=True)
+    approve_id_by_data = TeacherSerializer(read_only=True)
 
     class Meta:
         model = LeaveRequestDetail

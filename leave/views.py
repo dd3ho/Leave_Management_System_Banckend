@@ -4,7 +4,7 @@ from .serializer import FileSerializer, LeaveRequestSerializer, LeaveRequestDeta
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import action
-from rest_framework.response import Response
+from django.http import JsonResponse, HttpResponseBadRequest
 # ... your other imports
 
 
@@ -20,14 +20,11 @@ class LeaveRequestViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = super().get_queryset()
         id = self.request.query_params.get('id')
-        approve_id_by = self.request.query_params.get('approve_id_by')
         start_date = self.request.query_params.get('start_date')
         end_date = self.request.query_params.get('end_date')
         leave_type = self.request.query_params.get('leave_type')
         status = self.request.query_params.get('status')
 
-        if approve_id_by:
-            queryset = queryset.filter(approve_id_by=approve_id_by)
 
         if start_date:
             queryset = queryset.filter(start_date__icontains=start_date)
@@ -77,7 +74,7 @@ class LeaveRequestViewSet(viewsets.ModelViewSet):
         except Exception as e:
             # Handle unexpected errors
             return Response(str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        
+            
     # def create(self, request):
     #     serializer = LeaveRequestSerializer(data=request.data)
     #     if serializer.is_valid():
@@ -168,22 +165,44 @@ class LeaveRequestDetailViewSet(viewsets.ModelViewSet):
             ).delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         return Response(status=status.HTTP_400_BAD_REQUEST)
-    
+
     @action(detail=False, methods=['put'])
     def update_multiple(self, request):
         course_id = request.query_params.get('course_id')
         leave_request_id = request.query_params.get('leave_request_id')
         status = request.data.get('status')  # Directly get the status
+        # Add code to get approve_id_by from request data
+        approve_id_by = request.data.get('approve_id_by')
 
-        if course_id and leave_request_id:
+        if course_id and leave_request_id and status:
             updated_count = LeaveRequestDetail.objects.filter(
                 course_id=course_id,
                 leave_request_id=leave_request_id
             ).update(status=status)  # Direct update without serialization
 
             return Response({'updated_records': updated_count})
+        
+        if course_id and leave_request_id and approve_id_by:
+            updated_count = LeaveRequestDetail.objects.filter(
+                course_id=course_id,
+                leave_request_id=leave_request_id
+            ).update(approve_id_by=approve_id_by)  # Update approve_id_by field directly
+
+            return Response({'updated_records': updated_count})
         else:
-            return Response({'error': 'Invalid parameters provided'}, status=status.HTTP_400_BAD_REQUEST)
+            return HttpResponseBadRequest('Invalid parameters provided')
+    
+    # def update_approve_id_by(self, request, *args, **kwargs):
+    #     instance = self.get_object()  # ดึง LeaveRequest ที่ต้องการอัปเดต
+
+    #     # ตรวจสอบว่า request มีข้อมูล approve_id_by หรือไม่
+    #     if 'approve_id_by' in request.data:
+    #         new_approve_id_by = request.data['approve_id_by']
+    #         instance.approve_id_by_id = new_approve_id_by
+    #         instance.save()
+    #         return Response({'message': 'approve_id_by updated successfully'}, status=status.HTTP_200_OK)
+    #     else:
+    #         return Response({'error': 'approve_id_by field is required'}, status=status.HTTP_400_BAD_REQUEST)
         
         # Method for updating objects
     # def update(self, request, *args, **kwargs):

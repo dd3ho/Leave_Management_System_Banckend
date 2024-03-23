@@ -15,4 +15,6 @@ urlpatterns = [
     # DELETE
     path('leaveDetail/delete_multiple/', LeaveRequestDetailViewSet.as_view({'delete': 'delete_multiple'})),
     path('leaveDetail/update_multiple/', LeaveRequestDetailViewSet.as_view({'put': 'update_multiple'})),
+    # เพิ่ม path สำหรับ update_approve_id_by ใน LeaveRequestDetailViewSet
+    # path('leaveRequest/<int:pk>/update_approve_id_by/', LeaveRequestViewSet.as_view({'put': 'update_approve_id_by'})),
 ]

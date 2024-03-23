@@ -20,10 +20,6 @@ TYPE = [
 # Create your models here.
 
 class LeaveRequest(models.Model):
-    approve_id_by = models.ForeignKey(
-        Teacher, null=True, blank=True,
-        on_delete=models.CASCADE
-    )
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
     leave_type = models.CharField(max_length=20, choices=TYPE, default="undefined")
@@ -34,9 +30,17 @@ class LeaveRequestDetail(models.Model):
     leave_request_id = models.ForeignKey(LeaveRequest, null=True, on_delete=models.CASCADE)
     student_id = models.ForeignKey(Student,on_delete=models.CASCADE)
     course_id = models.ForeignKey(Course, null=True, blank=True, on_delete=models.CASCADE)
-    teacher_id = models.ForeignKey(Teacher, null=True, blank=True, on_delete=models.CASCADE)
+    teacher_id = models.ForeignKey(
+        Teacher, null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name="teacher_id",)
     status = models.CharField(max_length=20, choices=STATUS, default="pending")
-
+    approve_id_by = models.ForeignKey(
+        Teacher, null=True, blank=True,
+        related_name="approve_id_by",
+        on_delete=models.CASCADE
+    )
     
     # subjects = models.JSONField()
     # start_date = models.DateField(null=True, blank=True)
