@@ -28,7 +28,6 @@ class LeaveRequestViewSet(viewsets.ModelViewSet):
         end_date = self.request.query_params.get('end_date')
         leave_type = self.request.query_params.get('leave_type')
         status = self.request.query_params.get('status')
-        section = self.request.query_params.get('section')
 
         if start_date:
             queryset = queryset.filter(start_date__icontains=start_date)
@@ -44,11 +43,7 @@ class LeaveRequestViewSet(viewsets.ModelViewSet):
         
         if id:
             queryset = queryset.filter(id=id)
-        # Filter by course section
-        # section = self.request.query_params.get('section')
-        if section:
-            queryset = queryset.filter(course_id__section=section)
-        
+
         return queryset
     
     def create(self, request, *args, **kwargs):
