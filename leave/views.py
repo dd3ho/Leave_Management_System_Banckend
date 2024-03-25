@@ -6,6 +6,10 @@ from rest_framework import status
 from rest_framework.decorators import action
 from django.http import JsonResponse, HttpResponseBadRequest
 # ... your other imports
+# views.py (or wherever your API views are located)
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import generics
+from .filters import LeaveRequestDetailFilter
 
 
 class LeaveRequestViewSet(viewsets.ModelViewSet):
@@ -24,7 +28,7 @@ class LeaveRequestViewSet(viewsets.ModelViewSet):
         end_date = self.request.query_params.get('end_date')
         leave_type = self.request.query_params.get('leave_type')
         status = self.request.query_params.get('status')
-
+        section = self.request.query_params.get('section')
 
         if start_date:
             queryset = queryset.filter(start_date__icontains=start_date)
@@ -40,6 +44,10 @@ class LeaveRequestViewSet(viewsets.ModelViewSet):
         
         if id:
             queryset = queryset.filter(id=id)
+        # Filter by course section
+        # section = self.request.query_params.get('section')
+        if section:
+            queryset = queryset.filter(course_id__section=section)
         
         return queryset
     
@@ -87,7 +95,11 @@ class LeaveRequestViewSet(viewsets.ModelViewSet):
     #     else:
     #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    
+class LeaveRequestDetailView(generics.ListAPIView):
+    queryset = LeaveRequestDetail.objects.all()
+    serializer_class = LeaveRequestDetailSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = LeaveRequestDetailFilter
     
 class LeaveRequestDetailViewSet(viewsets.ModelViewSet):
     queryset = LeaveRequestDetail.objects.all()

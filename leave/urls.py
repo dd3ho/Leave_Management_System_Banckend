@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import FilesViewSet, LeaveRequestViewSet, LeaveRequestDetailViewSet
+from .views import FilesViewSet, LeaveRequestViewSet, LeaveRequestDetailViewSet, LeaveRequestDetailView
 
 router = DefaultRouter()
 router.register("files", FilesViewSet, basename="files")
@@ -15,6 +15,7 @@ urlpatterns = [
     # DELETE
     path('leaveDetail/delete_multiple/', LeaveRequestDetailViewSet.as_view({'delete': 'delete_multiple'})),
     path('leaveDetail/update_multiple/', LeaveRequestDetailViewSet.as_view({'put': 'update_multiple'})),
+    path('leave_request_details/', LeaveRequestDetailView.as_view(), name='leave-request-detail'),
+]
     # เพิ่ม path สำหรับ update_approve_id_by ใน LeaveRequestDetailViewSet
     # path('leaveRequest/<int:pk>/update_approve_id_by/', LeaveRequestViewSet.as_view({'put': 'update_approve_id_by'})),
-]

@@ -58,7 +58,7 @@ class LeaveRequestDetailSerializer(serializers.ModelSerializer):
     teacher_data = TeacherSerializer(source="teacher_id", read_only=True)
     student_data = StudentSerializer(source="student_id", read_only=True)
     course_data = CourseSerializer(source="course_id", read_only=True)
-    approve_id_by_data = TeacherSerializer(read_only=True)
+    approve_id_by_data = TeacherSerializer(source="approve_id_by",read_only=True)
 
     class Meta:
         model = LeaveRequestDetail
